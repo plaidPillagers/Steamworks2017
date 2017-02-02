@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -28,6 +27,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.I2C;
 
 
 
@@ -44,7 +44,9 @@ public class RobotMap {
     public static SpeedController drivetrainRightmotor;
     public static SpeedController drivetrainCentermotor;
     public static AnalogInput drivetrainRangeFinder1;
-    public static Encoder drivetrainQuadratureEncoder1;
+    public static Encoder drivetrainLeftEncoder1;
+    public static Encoder drivetrainRightEncoder1;
+    public static Encoder drivetrainCenterEncoder1;
     public static Compressor pnewmaticsCompressor1;
     public static DoubleSolenoid pnewmaticsDoubleSolenoid1;
 
@@ -66,10 +68,18 @@ public class RobotMap {
         drivetrainRangeFinder1 = new AnalogInput(0);
         LiveWindow.addSensor("drivetrain", "RangeFinder1", drivetrainRangeFinder1);
         
-        drivetrainQuadratureEncoder1 = new Encoder(0, 1, false, EncodingType.k4X);
-        LiveWindow.addSensor("drivetrain", "Quadrature Encoder 1", drivetrainQuadratureEncoder1);
-        drivetrainQuadratureEncoder1.setDistancePerPulse(1.0);
-        drivetrainQuadratureEncoder1.setPIDSourceType(PIDSourceType.kRate);
+        drivetrainLeftEncoder1 = new Encoder(0, 1, false, EncodingType.k4X);
+        LiveWindow.addSensor("drivetrain", "Left Encoder 1", drivetrainLeftEncoder1);
+        drivetrainLeftEncoder1.setDistancePerPulse(1.0);
+        drivetrainLeftEncoder1.setPIDSourceType(PIDSourceType.kRate);
+        drivetrainRightEncoder1 = new Encoder(2, 3, false, EncodingType.k4X);
+        LiveWindow.addSensor("drivetrain", "Right  Encoder 1", drivetrainRightEncoder1);
+        drivetrainRightEncoder1.setDistancePerPulse(1.0);
+        drivetrainRightEncoder1.setPIDSourceType(PIDSourceType.kRate);
+        drivetrainCenterEncoder1 = new Encoder(4, 5, false, EncodingType.k4X);
+        LiveWindow.addSensor("drivetrain", "Center Encoder 1", drivetrainCenterEncoder1);
+        drivetrainCenterEncoder1.setDistancePerPulse(1.0);
+        drivetrainCenterEncoder1.setPIDSourceType(PIDSourceType.kRate);
         pnewmaticsCompressor1 = new Compressor(0);
         
         
