@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.I2C;
 
 
 
@@ -45,7 +46,7 @@ public class RobotMap {
     public static AnalogInput drivetrainRangeFinder1;
     public static Encoder drivetrainLeftEncoder1;
     public static Encoder drivetrainRightEncoder1;
-    public static Encoder drivetrainQuadratureEncoder1;
+    public static Encoder drivetrainCenterEncoder1;
     public static Compressor pnewmaticsCompressor1;
     public static DoubleSolenoid pnewmaticsDoubleSolenoid1;
 
@@ -75,10 +76,10 @@ public class RobotMap {
         LiveWindow.addSensor("drivetrain", "Right  Encoder 1", drivetrainRightEncoder1);
         drivetrainRightEncoder1.setDistancePerPulse(1.0);
         drivetrainRightEncoder1.setPIDSourceType(PIDSourceType.kRate);
-        drivetrainQuadratureEncoder1 = new Encoder(4, 5, false, EncodingType.k4X);
-        LiveWindow.addSensor("drivetrain", "Quadrature Encoder 1", drivetrainQuadratureEncoder1);
-        drivetrainQuadratureEncoder1.setDistancePerPulse(1.0);
-        drivetrainQuadratureEncoder1.setPIDSourceType(PIDSourceType.kRate);
+        drivetrainCenterEncoder1 = new Encoder(4, 5, false, EncodingType.k4X);
+        LiveWindow.addSensor("drivetrain", "Center Encoder 1", drivetrainCenterEncoder1);
+        drivetrainCenterEncoder1.setDistancePerPulse(1.0);
+        drivetrainCenterEncoder1.setPIDSourceType(PIDSourceType.kRate);
         pnewmaticsCompressor1 = new Compressor(0);
         
         
