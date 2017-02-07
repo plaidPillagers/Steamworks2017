@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer.StaticInterface;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -53,7 +54,13 @@ public class drivetrain extends Subsystem {
 	private Joystick driveJoystick;
 	private ADXRS450_Gyro gyroSPI;
 	private ADXL345_I2C accel;
-	private final double autoForwardPower = 0.7;
+	private final double autoForwardPower = 0.6;
+	private final double max = 0.5;
+	private final double scaleAdjust = 0.16;
+	private double gyroAngle=0.0;
+	private int rightEncoderValue = 0;
+	private int centerEncoderValue = 0;
+	private int leftEncoderValue = 0;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -79,6 +86,10 @@ public class drivetrain extends Subsystem {
 		rd.arcadeDrive(y, x);
 		centermotor.set(z);
 	}
+	
+	private double getRange(){
+		return rangeFinder1.getVoltage() * 3.461 - 0.136; 
+	}
 
 	public void drive2() {
 		double y = driveJoystick.getY();
@@ -87,7 +98,7 @@ public class drivetrain extends Subsystem {
 		rd.arcadeDrive(y, -z);
 		centermotor.set(x);
 		String s = "" + gyroSPI.getAngle();
-		SmartDashboard.putString("autoCommand", s);
+		//SmartDashboard.putString("autoCommand", s.substring(0, 4));
 		// int rfv=rangeFinder1.getValue();
 		double rfv = rangeFinder1.getVoltage() * 3.461 - 0.136;
 
@@ -104,36 +115,168 @@ public class drivetrain extends Subsystem {
 
 	}
 
-	public void autoDriveForward() {
-		int es = rightEncoder1.get();
-		while(rightEncoder1.get()<es+7500){
-			leftmotor.set(-autoForwardPower);
-			rightmotor.set(autoForwardPower);			
-		}
+	public boolean autoDriveForwardEncoder(int distance,double speed,double tolerance){
+		if (rightEncoder1.get() < rightEncoderValue + distance) {
+			
+			double leftScale = 1.0;
+			double rightScale = 1.0;
+			double g1 = gyroSPI.getAngle() * 1.0001;
+			// SmartDashboard.putString("encoder",
+			// Double.toString(g1-g0).substring(0, 6));
+			if (Math.abs(g1 - gyroAngle) > tolerance) {
+				if (g1 > gyroAngle) {
+					leftScale *=1+(scaleAdjust);
+					rightScale *=1-(scaleAdjust);
+				} else if (g1 < gyroAngle) {
+					rightScale *=1+(scaleAdjust);
+					leftScale *=1-(scaleAdjust);
+				}
+			}
+			leftmotor.set(-speed * leftScale);
+			rightmotor.set(speed* rightScale);
+			return false;
+		} else {
 		leftmotor.set(0);
 		rightmotor.set(0);
-			
+		leftEncoderValue = leftEncoder1.get();
+		rightEncoderValue = rightEncoder1.get();
+		return true;
 		}
+	}
+	
+	public boolean autoDriveReverseEncoder(int distance,double speed,double tolerance){
+		if (leftEncoder1.get() < leftEncoderValue + distance) {
+			
+			double leftScale = 1.0;
+			double rightScale = 1.0;
+			double g1 = gyroSPI.getAngle() * 1.0001;
+			// SmartDashboard.putString("encoder",
+			// Double.toString(g1-g0).substring(0, 6));
+			if (Math.abs(g1 - gyroAngle) > tolerance) {
+				if (g1 > gyroAngle) {
+					leftScale *=1+(scaleAdjust);
+					rightScale *=1-(scaleAdjust);
+				} else if (g1 < gyroAngle) {
+					rightScale *=1+(scaleAdjust);
+					leftScale *=1-(scaleAdjust);
+				}
+			}
+			leftmotor.set(speed * leftScale);
+			rightmotor.set(-speed* rightScale);
+			return false;
+		} else {
+		leftmotor.set(0);
+		rightmotor.set(0);
+		leftEncoderValue = leftEncoder1.get();
+		rightEncoderValue = rightEncoder1.get();
+		return true;
+		}
+		
+	}
+	
+	public boolean autoDriveLeftEncoder(int distance,double speed){
+		if (centerEncoder1.get() < centerEncoderValue + distance) {
+			centermotor.set(speed);
+			return false;
+		}else{ 
+		centermotor.set(0);
+		centerEncoderValue = centerEncoder1.get();
+		return true;
+		}
+	}
+	
+	public boolean autoDriveRightEncoder(int distance,double speed){
+		if (centerEncoder1.get() < centerEncoderValue - distance) {
+			centermotor.set(-speed);
+			return false;
+		}else{ 
+		centermotor.set(0);
+		centerEncoderValue = centerEncoder1.get();
+		return true;
+		}
+	}
+	
+	public boolean autoRotateCW(double angle, double speed){
+		if (gyroSPI.getAngle()< gyroAngle + angle){
+			SmartDashboard.putString("autoCommand", Double.toString(gyroSPI.getAngle()));
+			leftmotor.set(speed);
+			rightmotor.set(speed);
+		return false;
+		} else {
+			leftmotor.set(0);
+			rightmotor.set(0);
+			centerEncoderValue = centerEncoder1.get();
+			leftEncoderValue = leftEncoder1.get();
+			rightEncoderValue = rightEncoder1.get();
+			return true;
+		}
+	}
 
-	public void stop() {
+	public boolean autoRotateCCW(double angle, double speed){
+		if (gyroSPI.getAngle()< gyroAngle - angle){
+			SmartDashboard.putString("autoCommand", Double.toString(gyroSPI.getAngle()));
+			leftmotor.set(-speed);
+			rightmotor.set(-speed);
+		return false;
+		} else {
+			leftmotor.set(0);
+			rightmotor.set(0);
+			centerEncoderValue = centerEncoder1.get();
+			leftEncoderValue = leftEncoder1.get();
+			rightEncoderValue = rightEncoder1.get();
+			return true;
+		}
+	}
+	public boolean initallizeSensors(){
+		gyroAngle=gyroSPI.getAngle();
+		centerEncoderValue = centerEncoder1.get();
+		leftEncoderValue = leftEncoder1.get();
+		rightEncoderValue = rightEncoder1.get();
+		return true;
+	}
+	
+	public boolean fowardRangeFinder(double range,double speed,double tolerance){
+	if (getRange() > range) {
+		String s2 = Double.toString(getRange());
+		SmartDashboard.putString("ultraVoltage", s2.substring(0, 8));
+			
+			double leftScale = 1.0;
+			double rightScale = 1.0;
+			double g1 = gyroSPI.getAngle() * 1.0001;
+			// SmartDashboard.putString("encoder",
+			// Double.toString(g1-g0).substring(0, 6));
+			if (Math.abs(g1 - gyroAngle) > tolerance) {
+				if (g1 > gyroAngle) {
+					leftScale *=1+(scaleAdjust);
+					rightScale *=1-(scaleAdjust);
+				} else if (g1 < gyroAngle) {
+					rightScale *=1+(scaleAdjust);
+					leftScale *=1-(scaleAdjust);
+				}
+			}
+			leftmotor.set(-speed * leftScale);
+			rightmotor.set(speed* rightScale);
+			return false;
+		} else {
+		leftmotor.set(0);
+		rightmotor.set(0);
+		leftEncoderValue = leftEncoder1.get();
+		rightEncoderValue = rightEncoder1.get();
+		return true;
+		}
+		
+	}
+	
+	public boolean stop() {
 		leftmotor.set(0);
 		rightmotor.set(0);
 		centermotor.set(0);
+		return true;
 	}
-	
-	public void forward (){
-    	Joystick j =Robot.oi.driveJoystick;
-    	
-    	if( j.getRawButton(3)){
-    	autoDriveForward();
-    	}
-    	if (j.getRawButton(4))
-    	{
-    	stop();	
-    	}
+
+	public void forward() {
+		
+		
 	}
-    	
+
 }
-    	
-
-
