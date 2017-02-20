@@ -82,7 +82,7 @@ public class OI {
         gateOpen.whenPressed(new OpenGate());
         activateShooter = new JoystickButton(secondaryJoystick, 6);
         activateShooter.whileHeld(new ShooterLauncher());
-        aimShooter = new JoystickButton(secondaryJoystick, 5);
+        aimShooter = new JoystickButton(secondaryJoystick, 8);
         aimShooter.whenPressed(new ShooterAim(0));
         driveJoystick = new Joystick(0);
         

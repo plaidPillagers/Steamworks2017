@@ -56,7 +56,7 @@ public class Pnewmatics extends Subsystem {
     
     public Pnewmatics() {
 		// TODO Auto-generated constructor stub
-    	compressor1.setClosedLoopControl(true);
+  //  	compressor1.setClosedLoopControl(true);
 	}
     
   
