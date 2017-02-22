@@ -16,7 +16,7 @@ import org.usfirst.frc2538.Steamworks.Robot;
 import org.usfirst.frc2538.Steamworks.RobotMap;
 import org.usfirst.frc2538.Steamworks.commands.*;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;

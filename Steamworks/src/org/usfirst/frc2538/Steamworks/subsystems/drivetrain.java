@@ -14,7 +14,7 @@ import org.usfirst.frc2538.Steamworks.Robot;
 import org.usfirst.frc2538.Steamworks.RobotMap;
 import org.usfirst.frc2538.Steamworks.commands.*;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
