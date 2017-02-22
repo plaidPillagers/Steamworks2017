@@ -85,6 +85,15 @@ public class GearSystem extends Subsystem {
     		return true;
     	}
     }
+    public boolean TiltIn(){
+    	tilt.set(DoubleSolenoid.Value.kForward);
+    	return true;
+    }
+    public boolean TiltOut(){
+    tilt.set(DoubleSolenoid.Value.kReverse);
+    return true;
+    }
+    
 }
 
 
