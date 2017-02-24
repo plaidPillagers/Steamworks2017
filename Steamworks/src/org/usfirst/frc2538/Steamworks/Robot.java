@@ -23,6 +23,7 @@ import org.usfirst.frc2538.Steamworks.subsystems.Vision;
 import org.usfirst.frc2538.Steamworks.subsystems.drivetrain;
 import org.usfirst.frc2538.Steamworks.subsystems.Shooter;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -60,7 +61,10 @@ public class Robot extends IterativeRobot {
         //the camera name (ex "cam0") can be found through the roborio web interface
         //server.startAutomaticCapture("cam0");
         //server.startAutomaticCapture("cam1");
-    
+        UsbCamera c2=new UsbCamera("cam1", 1);
+        CameraServer server=CameraServer.getInstance();
+        server.addCamera(c2);
+        server.startAutomaticCapture(1);
     }
 
     /**
