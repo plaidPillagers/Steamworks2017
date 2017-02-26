@@ -128,5 +128,19 @@ public boolean active= false;
     	int location = rotationEncoder.get();
     	SmartDashboard.putString("Shooter position",Integer.toString(location));
     }
+    private boolean encoderInitialized = false;
+    public boolean defaultShooter(){
+    	if (!encoderInitialized){
+    		if(isLowStop()){
+    			rotationEncoder.reset();
+    			encoderInitialized=true;
+    		}else{
+    			shooterRotation.set(-.7);
+    		}
+    	}
+    	return encoderInitialized;
+    }
 }
+
+
 

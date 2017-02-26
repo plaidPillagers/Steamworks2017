@@ -116,6 +116,10 @@ public class drivetrain extends Subsystem {
 		SmartDashboard.putString("ultraVoltage", s2.substring(0, 8));
 		String s3 = "" + accel.getX();
 		SmartDashboard.putString("Accelerometer x", s3);
+		int encoderValue = leftMotor2.getEncPosition();
+		SmartDashboard.putString("encoder", Integer.toString(encoderValue));
+		SmartDashboard.putString("encoder speed ", ""+leftMotor2.getEncVelocity());
+		SmartDashboard.putNumber("vision",Robot.networkTable.getNumber("test",-1.0));
 		/*String s4 = "" + leftmotor.getEncPosition();
 		String s5 = "" + rightmotor.getEncPosition();
 		String s6 = "" + centerEncoder1.get();
