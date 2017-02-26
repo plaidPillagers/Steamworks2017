@@ -92,7 +92,7 @@ public class OI {
         gateClose = new JoystickButton(secondaryJoystick, 5);
         gateClose.whenPressed(new CloseGate());
         gateOpen = new JoystickButton(secondaryJoystick, 3);
-        gateOpen.whenPressed(new OpenGate());
+        gateOpen.whenPressed(new GearGateOpen());
         activateShooter = new JoystickButton(secondaryJoystick, 6);
         activateShooter.whileHeld(new ShooterLauncher());
         aimShooter = new JoystickButton(secondaryJoystick, 8);
@@ -112,7 +112,6 @@ public class OI {
 
 
         // SmartDashboard Buttons
-        SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("DriveCommand", new DriveCommand());
         SmartDashboard.putData("PnewmaticCommand", new PnewmaticCommand());
         SmartDashboard.putData("Stop", new Stop());

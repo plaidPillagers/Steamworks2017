@@ -113,10 +113,8 @@ public class RobotMap {
         LiveWindow.addSensor("Shooter", "RotationEncoder", shooterRotationEncoder);
         shooterRotationEncoder.setDistancePerPulse(1.0);
         shooterRotationEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-        shooterShooterRotation=new Talon(2);
-      LiveWindow.addActuator("Shooter", "ShooterRotation", (Talon) shooterShooterRotation);
-        //shooterShooterRotation = new Spark(2);
-        //LiveWindow.addActuator("Shooter", "ShooterRotation", (Spark) shooterShooterRotation);
+        shooterShooterRotation = new Talon(2);
+        LiveWindow.addActuator("Shooter", "ShooterRotation", (Talon) shooterShooterRotation);
         
         shooterRotation = new PIDController(1.25E-4, 1.0E-5, 1.0E-5, 0.0, shooterRotationEncoder, shooterShooterRotation, 0.02);
         LiveWindow.addActuator("Shooter", "Rotation", shooterRotation);
