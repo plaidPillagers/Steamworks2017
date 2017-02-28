@@ -13,7 +13,6 @@ package org.usfirst.frc2538.Steamworks;
 
 
 import org.usfirst.frc2538.Steamworks.commands.AutoCommandGroupToo;
-import org.usfirst.frc2538.Steamworks.commands.AutonomousCommand;
 import org.usfirst.frc2538.Steamworks.commands.DriveForward;
 import org.usfirst.frc2538.Steamworks.commands.Stop;
 import org.usfirst.frc2538.Steamworks.subsystems.BallIntake;
@@ -142,7 +141,9 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
+    	Robot.shooter.encoderInitialized=true;
         if (autonomousCommand != null) autonomousCommand.start();
+        Robot.shooter.disablePID();
     }
 
     /**
@@ -158,6 +159,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        Robot.shooter.encoderInitialized= false;
+        Robot.shooter.disablePID();
     }
 
     /**

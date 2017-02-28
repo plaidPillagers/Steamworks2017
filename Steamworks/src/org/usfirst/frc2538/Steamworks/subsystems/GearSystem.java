@@ -93,6 +93,12 @@ public class GearSystem extends Subsystem {
     tilt.set(DoubleSolenoid.Value.kReverse);
     return true;
     }
+
+	public void stopMotor() {
+		gate.set(0.0);
+		
+		
+	}
     
 }
 
