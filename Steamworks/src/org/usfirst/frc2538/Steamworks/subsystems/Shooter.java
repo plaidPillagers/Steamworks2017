@@ -151,6 +151,12 @@ public boolean encoderInitialized = false;
     	}
     	return encoderInitialized;
     }
+
+
+	public boolean stop() {
+	wheelMotor.set(0.0);
+		return true;
+	}
 }
 
 

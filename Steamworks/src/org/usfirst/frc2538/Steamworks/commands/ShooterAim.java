@@ -38,6 +38,7 @@ public class ShooterAim extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	finished = false;
     	Robot.shooter.enablePID(m_target);
     }
 

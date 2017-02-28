@@ -249,6 +249,7 @@ public class drivetrain extends Subsystem {
 		leftEncoderValue = leftmotor.getEncPosition();
 		rightEncoderValue = rightmotor.getEncPosition();
 		return true;
+
 	}
 	
 	public boolean fowardRangeFinder(double range,double speed,double tolerance){
